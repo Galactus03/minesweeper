@@ -21,3 +21,14 @@
 3) No opened and numbered till will have a mark zero.<br>
 
 <h5> Enter your suggestions below : </h5>
+
+1)Function to assign mine positions : <br/>For a range of n, lets fix how many mines will be necessaary, then generate that number of mines using random variable.
+<br/>
+2)Function to assign numbers to each place:<br/>
+goto each place not having a mine and check mines in neighbouring blocks, to assign numbers<br/>
+2a) function to generate neighbours of each block
+<br/>
+3)buttons n*n<br/>
+=> left click open: if mine open all mine buttons, else preview number 
+<br/>
+=>right click flag
