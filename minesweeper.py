@@ -1,0 +1,1 @@
+"""An hackable minesweeper game"""
