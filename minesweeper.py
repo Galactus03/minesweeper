@@ -1,3 +1,4 @@
+"""An hackable minesweeper game"""
 #MineSweeper
 
 from Tkinter import *
