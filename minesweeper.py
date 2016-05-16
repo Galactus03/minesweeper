@@ -23,8 +23,8 @@ def create_grid(x,mine_grid):
 
 #genrating the mines,the position with mines will be marked "*"
     for i in range(1,x/2+1):
-        mine_x=random.randint(0,8)
-        mine_y=random.randint(0,8)
+        mine_x=random.randint(0,7)
+        mine_y=random.randint(0,7)
         cells_position[mine_x,mine_y]="*"
 
 #now we will find number of mines around each cell and mark them so
@@ -37,8 +37,39 @@ def create_grid(x,mine_grid):
                     if cells_position[key[0]+movement[0],key[1]+movement[1]] == "*":
                         mine_value+=1
             cells_position[key]=mine_value
-            print cells_position,"cells_position"
+        #    print cells_position,"cells_position"
             grid_dict[key]["text"]=mine_value
+
+#to be binded to left click of mines
+    def left_mine(event):
+        for key in cells_position:
+            if cells_position[key] == "*":
+                grid_dict[key]["text"] = "X"
+                grid_dict[key]["bg"] = "red"
+#corrrect the disbling of a button
+                grid_dict[key]['state']='disabled'
+                grid_dict[key].config(relief=SUNKEN)
+
+#to be binded to left click of not mines
+    def left_not_mine(event):
+        for key in cells_position:
+            if cells_position[key] != "*":
+                grid_dict[key]["text"] = cells_position[key]
+#corrrect the disbling of a button
+                grid_dict['state']='disabled'
+                grid_dict[key].config(relief=SUNKEN)
+
+#binding the event to respective buttons
+    for key in cells_position:
+        if cells_position[key] != "*":
+            grid_dict[key].bind("<Button-1>",left_not_mine)
+        elif cells_position[key] == "*":
+            grid_dict[key].bind("<Button-1>",left_mine)
+
+
+
+
+
 
 
 def small_grid():
