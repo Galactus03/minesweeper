@@ -17,14 +17,14 @@ def create_grid(x,mine_grid):
     cells_position={}
     for i in range(0,x):
         for j in range(0,x):
-            grid_dict[i,j]=Button(mine_grid,text=str(i)+","+str(j))
+            grid_dict[i,j]=Button(mine_grid)
             grid_dict[i,j].grid(row=i,column=j)
             cells_position[i,j]=0
 
 #genrating the mines,the position with mines will be marked "*"
-    for i in range(1,x/2+1):
-        mine_x=random.randint(0,7)
-        mine_y=random.randint(0,7)
+    for i in range(1,(x*x)/6+1):
+        mine_x=random.randint(0,x-1)
+        mine_y=random.randint(0,x-1)
         cells_position[mine_x,mine_y]="*"
 
 #now we will find number of mines around each cell and mark them so
@@ -37,8 +37,9 @@ def create_grid(x,mine_grid):
                     if cells_position[key[0]+movement[0],key[1]+movement[1]] == "*":
                         mine_value+=1
             cells_position[key]=mine_value
+        #
         #    print cells_position,"cells_position"
-            grid_dict[key]["text"]=mine_value
+        #    grid_dict[key]["text"]=mine_value
 
 #to be binded to left click of mines
     def left_mine(event):
@@ -49,22 +50,36 @@ def create_grid(x,mine_grid):
 #corrrect the disbling of a button
                 grid_dict[key]['state']='disabled'
                 grid_dict[key].config(relief=SUNKEN)
+        tkMessageBox.showerror("Defeat", "you lose")
+
 
 #to be binded to left click of not mines
     def left_not_mine(event):
+        print event.widget,"event widget"
         for key in cells_position:
-            if cells_position[key] != "*":
-                grid_dict[key]["text"] = cells_position[key]
-#corrrect the disbling of a button
-                grid_dict['state']='disabled'
-                grid_dict[key].config(relief=SUNKEN)
+            if grid_dict[key]==event.widget:
+                event.widget["text"]=cells_position[key]
+                for movement in possible_movements:
+                    if cells_position[key[0]+movement[0],key[1]+movement[1]]==0:
+                        grid_dict[key[0]+movement[0],key[1]+movement[1]]["text"]=0
 
+#to be binded to right click
+    def right_click(event):
+        for key in cells_position:
+            if event.widget==grid_dict[key]:
+                if event.widget['text']=='|>':
+                    event.widget['text']=''
+                else:
+                    event.widget['text']='|>'
 #binding the event to respective buttons
+
     for key in cells_position:
         if cells_position[key] != "*":
             grid_dict[key].bind("<Button-1>",left_not_mine)
+            grid_dict[key].bind("<Button-3>",right_click)
         elif cells_position[key] == "*":
             grid_dict[key].bind("<Button-1>",left_mine)
+            grid_dict[key].bind("<Button-3>",right_click)
 
 
 
